@@ -11,5 +11,22 @@
   </head>
   <body>
     <h1>Library App</h1>
+    <script>
+      var query = `{
+        books {
+          name
+        }
+      }`;
+
+      fetch('http://localhost:4000/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: query
+        }),
+      }).then(res => res.json()).then(data => console.log(data));
+    </script>
   </body>
 </html>

@@ -1,7 +1,27 @@
 {
+  "name": "graphqlibrarian",
+  "description": "> Simple NodeJS GraphQL Server using Express",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js", 
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {},
   "dependencies": {
     "express": "^4.15.3",
     "express-graphql": "^0.6.6",
     "graphql": "^0.10.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adhywiranata/graphqlibrarian.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adhywiranata/graphqlibrarian/issues"
+  },
+  "homepage": "https://github.com/adhywiranata/graphqlibrarian#readme"
 }

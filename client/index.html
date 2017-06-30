@@ -18,14 +18,8 @@
     </section>
 
     <script>
-      const getAllBooks = () => {
-        var query = `{
-          books {
-            title
-          }
-        }`;
-
-        fetch('http://localhost:4000/graphql', {
+      const fetchFromServer = (query) => {
+        return fetch('http://localhost:4000/graphql', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -33,7 +27,17 @@
           body: JSON.stringify({
             query: query
           }),
-        }).then(res => res.json()).then(res => {
+        });
+      };
+
+      const getAllBooks = () => {
+        var query = `{
+          books {
+            title
+          }
+        }`;
+
+        fetchFromServer(query).then(res => res.json()).then(res => {
           var listWrapper = document.getElementById('book-list').getElementsByTagName('ul')[0];
           res.data.books.forEach(book => {
             var listItem = document.createElement('li');

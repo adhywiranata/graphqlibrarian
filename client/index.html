@@ -12,6 +12,9 @@
   <body>
     <h1>Library App</h1>
     <section id="book-list">
+      <h3>Available Books</h3>
+      <ul>
+      </ul>
     </section>
 
     <script>
@@ -29,7 +32,14 @@
         body: JSON.stringify({
           query: query
         }),
-      }).then(res => res.json()).then(data => console.log(data));
+      }).then(res => res.json()).then(res => {
+        var listWrapper = document.getElementById('book-list').getElementsByTagName('ul')[0];
+        res.data.books.forEach(book => {
+          var listItem = document.createElement('li');
+          listItem.innerHTML = book.title;
+          listWrapper.appendChild(listItem);
+        });
+      });
     </script>
   </body>
 </html>

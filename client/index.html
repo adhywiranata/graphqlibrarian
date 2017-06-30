@@ -18,28 +18,32 @@
     </section>
 
     <script>
-      var query = `{
-        books {
-          title
-        }
-      }`;
+      const getAllBooks = () => {
+        var query = `{
+          books {
+            title
+          }
+        }`;
 
-      fetch('http://localhost:4000/graphql', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query: query
-        }),
-      }).then(res => res.json()).then(res => {
-        var listWrapper = document.getElementById('book-list').getElementsByTagName('ul')[0];
-        res.data.books.forEach(book => {
-          var listItem = document.createElement('li');
-          listItem.innerHTML = book.title;
-          listWrapper.appendChild(listItem);
+        fetch('http://localhost:4000/graphql', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            query: query
+          }),
+        }).then(res => res.json()).then(res => {
+          var listWrapper = document.getElementById('book-list').getElementsByTagName('ul')[0];
+          res.data.books.forEach(book => {
+            var listItem = document.createElement('li');
+            listItem.innerHTML = book.title;
+            listWrapper.appendChild(listItem);
+          });
         });
-      });
+      };
+
+      getAllBooks();
     </script>
   </body>
 </html>

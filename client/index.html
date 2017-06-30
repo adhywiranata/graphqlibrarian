@@ -27,7 +27,7 @@
           body: JSON.stringify({
             query: query
           }),
-        });
+        }).then(res => res.json());
       };
 
       const getAllBooks = () => {
@@ -37,7 +37,7 @@
           }
         }`;
 
-        fetchFromServer(query).then(res => res.json()).then(res => {
+        fetchFromServer(query).then(res => {
           var listWrapper = document.getElementById('book-list').getElementsByTagName('ul')[0];
           res.data.books.forEach(book => {
             var listItem = document.createElement('li');

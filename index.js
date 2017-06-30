@@ -2,18 +2,52 @@ var express = require('express');
 var graphqlHTTP = require('express-graphql');
 var { buildSchema } = require('graphql');
 
+var { booksData, membersData } = require('./seedData');
+
 // Construct a schema, using GraphQL schema language
 var schema = buildSchema(`
+  type Book {
+    id: ID!,
+    title: String!,
+    category: String!,
+    author: String,
+    borrowCount: Int,
+    pageCount: Int,
+    createdAt: String,
+    updatedAt: String,
+    deletedAt: String,
+  }
+
+  type BorrowingStatus {
+    isBorrowing: Boolean,
+    bookId: Int,
+  }
+
+  type Member {
+    id: ID!,
+    firstName: String!,
+    lastName: String,
+    age: Int,
+    borrowingStatus: BorrowingStatus,
+    createdAt: String,
+    updatedAt: String,
+    deletedAt: String,
+  }
+
   type Query {
-    hello: String
+    books: [Book],
+    members: [Member],
   }
 `);
 
 // The root provides a resolver function for each API endpoint
 var root = {
-  hello: () => {
-    return 'Hello world!';
+  books: () => {
+    return booksData;
   },
+  members: () => {
+    return membersData;
+  }
 };
 
 var app = express();

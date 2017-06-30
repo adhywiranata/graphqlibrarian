@@ -17,6 +17,12 @@
       </ul>
     </section>
 
+    <section id="member-list">
+      <h3>Registered Members</h3>
+      <ul>
+      </ul>
+    </section>
+
     <script>
       const fetchFromServer = (query) => {
         return fetch('http://localhost:4000/graphql', {
@@ -47,7 +53,26 @@
         });
       };
 
+      const getAllMembers = () => {
+        var query = `{
+          members {
+            firstName,
+            lastName,
+          }
+        }`;
+
+        fetchFromServer(query).then(res => {
+          var listWrapper = document.getElementById('member-list').getElementsByTagName('ul')[0];
+          res.data.members.forEach(member => {
+            var listItem = document.createElement('li');
+            listItem.innerHTML = `${member.firstName} ${member.lastName}`;
+            listWrapper.appendChild(listItem);
+          });
+        });
+      };
+
       getAllBooks();
+      getAllMembers();
     </script>
   </body>
 </html>

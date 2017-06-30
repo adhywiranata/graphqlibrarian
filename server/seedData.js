@@ -13,7 +13,7 @@ const booksSeed = [
   {
     id: 2,
     title: 'How to kill a Dragon',
-    category: 'Fiction',
+    category: 'Drama',
     author: 'John Doe',
     borrowCount: 5,
     pageCount: 300,

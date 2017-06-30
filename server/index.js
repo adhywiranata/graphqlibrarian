@@ -37,6 +37,7 @@ var schema = buildSchema(`
 
   type Query {
     books: [Book],
+    getBooksByCategory(category: String!): [Book]
     members: [Member],
   }
 `);
@@ -46,9 +47,12 @@ var root = {
   books: () => {
     return booksData;
   },
+  getBooksByCategory: ({ category }) => {
+    return booksData.filter(book => book.category === category);
+  },
   members: () => {
     return membersData;
-  }
+  },
 };
 
 var app = express();

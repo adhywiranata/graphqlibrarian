@@ -17,6 +17,12 @@
       </ul>
     </section>
 
+    <section id="categorized-book-list">
+      <h3>Available Fiction Books</h3>
+      <ul>
+      </ul>
+    </section>
+
     <section id="member-list">
       <h3>Registered Members</h3>
       <ul>
@@ -53,6 +59,23 @@
         });
       };
 
+      const getBooksByCategory = (category) => {
+        var query = `{
+          getBooksByCategory(category: "${category}") {
+            title
+          }
+        }`;
+
+        fetchFromServer(query).then(res => {
+          var listWrapper = document.getElementById('categorized-book-list').getElementsByTagName('ul')[0];
+          res.data.getBooksByCategory.forEach(book => {
+            var listItem = document.createElement('li');
+            listItem.innerHTML = book.title;
+            listWrapper.appendChild(listItem);
+          });
+        });
+      };
+
       const getAllMembers = () => {
         var query = `{
           members {
@@ -72,6 +95,7 @@
       };
 
       getAllBooks();
+      getBooksByCategory('Fiction');
       getAllMembers();
     </script>
   </body>

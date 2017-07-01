@@ -4,28 +4,12 @@ var graphqlHTTP = require('express-graphql');
 var { buildSchema } = require('graphql');
 
 var { booksData, membersData } = require('./seedData');
+var { schemaBookType, schemaNewBookInput, bookQueries, bookMutations } = require('./schemas/bookSchema');
 
 // Construct a schema, using GraphQL schema language
 var schema = buildSchema(`
-  type Book {
-    id: ID!,
-    title: String!,
-    category: String!,
-    author: String,
-    borrowCount: Int,
-    pageCount: Int,
-    createdAt: String,
-    updatedAt: String,
-    deletedAt: String,
-  }
-
-  input NewBookInput {
-    title: String!,
-    category: String!,
-    author: String,
-    pageCount: Int,
-  }
-
+  ${schemaBookType}
+  ${schemaNewBookInput}
   type BorrowingStatus {
     isBorrowing: Boolean,
     bookId: Int,
@@ -43,13 +27,12 @@ var schema = buildSchema(`
   }
 
   type Query {
-    books: [Book],
-    getBooksByCategory(category: String!): [Book]
+    ${bookQueries}
     members: [Member],
   }
 
   type Mutation {
-    createBook(input: NewBookInput): Book
+    ${bookMutations}
   }
 `);
 

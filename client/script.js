@@ -1,16 +1,4 @@
-const fetchFromServer = (query) => {
-  return fetch('http://localhost:4000/graphql', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      query: query
-    }),
-  }).then(res => res.json());
-};
-
-const mutateFromServer = (query, variables) => {
+const fetchFromServer = (query, variables) => {
   return fetch('http://localhost:4000/graphql', {
     method: 'POST',
     headers: {
@@ -19,8 +7,8 @@ const mutateFromServer = (query, variables) => {
     body: JSON.stringify({
       query: query,
       variables: {
-        input: variables
-      }
+        input: variables,
+      },
     }),
   }).then(res => res.json());
 };
@@ -84,7 +72,7 @@ const createBook = (variables) => {
     }
   }`;
 
-  mutateFromServer(query, variables).then(res => {
+  fetchFromServer(query, variables).then(res => {
     var listWrapper = document.getElementById('book-list').getElementsByTagName('ul')[0];
     var listItem = document.createElement('li');
     listItem.innerHTML = `${res.data.createBook.title}`;

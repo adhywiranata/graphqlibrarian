@@ -66,13 +66,21 @@ const getAllMembers = () => {
 };
 
 const createBook = (variables) => {
-  var query = `mutation CreateBook($input: NewBookInput) {
-    createBook(input: $input) {
-      title,
+  const { title, category, author, pageCount } = variables;
+  var mutation = `mutation {
+    createBook(input: {
+      title: "${title}",
+      category: "${category}",
+      author: "${author}",
+      pageCount: ${pageCount},
+    }) {
+    	pageCount,
+    	title,
+      createdAt,
     }
   }`;
 
-  fetchFromServer(query, variables).then(res => {
+  fetchFromServer(mutation, variables).then(res => {
     var listWrapper = document.getElementById('book-list').getElementsByTagName('ul')[0];
     var listItem = document.createElement('li');
     listItem.innerHTML = `${res.data.createBook.title}`;
@@ -91,10 +99,12 @@ newBookForm.addEventListener('submit', (e) => {
   const title = document.getElementById('book-input-title').value;
   const author = document.getElementById('book-input-author').value;
   const category = document.getElementById('book-input-category').value;
+  const pageCount = 5;
   const bookObj = {
     title,
     author,
     category,
+    pageCount
   };
 
   document.getElementById('book-input-title').value = '';

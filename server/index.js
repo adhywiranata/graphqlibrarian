@@ -3,6 +3,7 @@ var cors = require('cors');
 var graphqlHTTP = require('express-graphql');
 var {
   GraphQLList,
+  GraphQLString,
   GraphQLObjectType,
   GraphQLSchema,
 } = require('graphql');
@@ -22,7 +23,25 @@ let QueryType = new GraphQLObjectType({
   fields: () => ({
     books: {
       type: new GraphQLList(BookType),
-      resolve: () => { return booksData }
+      resolve: () => {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => resolve(booksData), 1000);
+        });
+      },
+    },
+    getBooksByCategory: {
+      type: new GraphQLList(BookType),
+      args: {
+        category: {
+          type: GraphQLString,
+        },
+      },
+      resolve: (obj, args) => {
+        var category = args.category;
+        return new Promise((resolve, reject) => {
+          setTimeout(() => resolve(booksData.filter(book => book.category === category)), 1000);
+        });
+      },
     },
     members: {
       type: new GraphQLList(MemberType),
@@ -37,49 +56,50 @@ let AppSchema = new GraphQLSchema({
 
 // The root provides a resolver function for each API endpoint
 // here, we use setTimeout to show that a resolver handles async in a promise
-var root = {
-  books: () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => resolve(booksData), 1000);
-    });
-  },
-  // getBooksByCategory: ({ category }) => {
-  //   return new Promise((resolve, reject) => {
-  //     setTimeout(() => resolve(booksData.filter(book => book.category === category)), 1000);
-  //   });
-  // },
-  members: () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => resolve(membersData), 1000);
-    });
-  },
-  // createBook: ({ input }) => {
-  //   const latestId = fakeDatabase.booksData[fakeDatabase.booksData.length - 1].id;
-  //   const newBook = {
-  //     id: latestId + 1,
-  //     title: input.title,
-  //     category: input.category,
-  //     author: input.author,
-  //     borrowCount: 0,
-  //     pageCount: 0,
-  //     createdAt: new Date(),
-  //     updatedAt: null,
-  //     deletedAt: null,
-  //   };
-  //   return new Promise((resolve, reject) => {
-  //     setTimeout(() => {
-  //       fakeDatabase.booksData.push(newBook);
-  //       resolve(newBook);
-  //     }, 1000);
-  //   });
-  // }
-};
+// var root = {
+//   // books: () => {
+//   //   return new Promise((resolve, reject) => {
+//   //     setTimeout(() => resolve(booksData), 1000);
+//   //   });
+//   // },
+//   getBooksByCategory: ({ category }) => {
+//     console.log(category);
+//     return new Promise((resolve, reject) => {
+//       setTimeout(() => resolve(booksData.filter(book => book.category === category)), 1000);
+//     });
+//   },
+//   // members: () => {
+//   //   return new Promise((resolve, reject) => {
+//   //     setTimeout(() => resolve(membersData), 1000);
+//   //   });
+//   // },
+//   // createBook: ({ input }) => {
+//   //   const latestId = fakeDatabase.booksData[fakeDatabase.booksData.length - 1].id;
+//   //   const newBook = {
+//   //     id: latestId + 1,
+//   //     title: input.title,
+//   //     category: input.category,
+//   //     author: input.author,
+//   //     borrowCount: 0,
+//   //     pageCount: 0,
+//   //     createdAt: new Date(),
+//   //     updatedAt: null,
+//   //     deletedAt: null,
+//   //   };
+//   //   return new Promise((resolve, reject) => {
+//   //     setTimeout(() => {
+//   //       fakeDatabase.booksData.push(newBook);
+//   //       resolve(newBook);
+//   //     }, 1000);
+//   //   });
+//   // }
+// };
 
 var app = express();
 app.use(cors());
 app.use('/graphql', graphqlHTTP({
   schema: AppSchema,
-  rootValue: root,
+  // rootValue: root,
   graphiql: true,
 }));
 app.listen(4000);

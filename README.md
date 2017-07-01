@@ -14,4 +14,4 @@
 Ngopract iteration consists of several branches (01-, 02-, etc) to ensure the best "ngopract" experience.
 
 - [01-Simple GraphQL](https://github.com/adhywiranata/graphqlibrarian/tree/01-basic-graphql-usage), simple getting started with query and mutation on an in-memory global variable fake database
-- [02-Deeper GraphQL](), deeper example, still using in-memory fake database
+- [02-Simple GraphQL with Async](https://github.com/adhywiranata/graphqlibrarian/tree/02-deeper-graphql), deeper example in async operation, still using in-memory fake database

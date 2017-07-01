@@ -3,6 +3,7 @@ var cors = require('cors');
 var graphqlHTTP = require('express-graphql');
 var {
   GraphQLList,
+  GraphQLInt,
   GraphQLString,
   GraphQLObjectType,
   GraphQLSchema,
@@ -11,6 +12,7 @@ var {
 var { booksData, membersData } = require('./seedData');
 
 var BookType = require('./types/BookType');
+var NewBookInputType = require('./types/NewBookInputType');
 var MemberType = require('./types/MemberType');
 
 var fakeDatabase = {
@@ -29,6 +31,9 @@ let QueryType = new GraphQLObjectType({
         });
       },
     },
+    // newBookInput: {
+    //   type: NewBookInputType,
+    // },
     getBooksByCategory: {
       type: new GraphQLList(BookType),
       args: {
@@ -50,8 +55,45 @@ let QueryType = new GraphQLObjectType({
   }),
 });
 
+let MutationType = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: () => ({
+    createBook: {
+      type: BookType,
+      args: {
+        input: {
+          name: 'wow',
+          type: NewBookInputType,
+        },
+      },
+      resolve: (obj, args) => {
+        const input = args.input;
+        const latestId = fakeDatabase.booksData[fakeDatabase.booksData.length - 1].id;
+        const newBook = {
+          id: latestId + 1,
+          title: input.title,
+          category: input.category,
+          author: input.author,
+          borrowCount: 0,
+          pageCount: 0,
+          createdAt: new Date(),
+          updatedAt: null,
+          deletedAt: null,
+        };
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            fakeDatabase.booksData.push(newBook);
+            resolve(newBook);
+          }, 1000);
+        });
+      },
+    },
+  }),
+});
+
 let AppSchema = new GraphQLSchema({
-  query: QueryType
+  query: QueryType,
+  mutation: MutationType,
 });
 
 // The root provides a resolver function for each API endpoint

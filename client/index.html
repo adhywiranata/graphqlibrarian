@@ -17,7 +17,20 @@
       </ul>
     </section>
 
-    <button id="add-new-book">Add New Book</button>
+    <h2>Add New Book</h2>
+    <form id="add-book-form" style="display: flex; flex-direction: column; width: 30%">
+      <label for="book-input-title">Book Title</label>
+      <input id="book-input-title" type="text" />
+      <label for="book-input-author">Book Author</label>
+      <input id="book-input-author" type="text" />
+      <label for="book-input-title">Book Category</label>
+      <select id="book-input-category">
+        <option value="Fiction">Fiction</option>
+        <option value="Drama">Drama</option>
+        <option value="Action">Action</option>
+      </select>
+      <input type="submit" value="Add New Book" />
+    </form>
 
     <section id="categorized-book-list">
       <h3>Available Fiction Books</h3>

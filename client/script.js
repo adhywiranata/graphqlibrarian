@@ -77,18 +77,12 @@ const getAllMembers = () => {
   });
 };
 
-const createMember = () => {
+const createBook = (variables) => {
   var query = `mutation CreateBook($input: NewBookInput) {
     createBook(input: $input) {
       title,
     }
   }`;
-
-  var variables = {
-    title: "yess",
-    author: "joe",
-    category: "Fiction",
-  };
 
   mutateFromServer(query, variables).then(res => {
     var listWrapper = document.getElementById('book-list').getElementsByTagName('ul')[0];
@@ -102,8 +96,21 @@ getAllBooks();
 getBooksByCategory('Fiction');
 getAllMembers();
 
-const addNewBookBtn = document.getElementById('add-new-book');
+const newBookForm = document.getElementById('add-book-form');
 
-addNewBookBtn.addEventListener('click', () => {
-  createMember();
+newBookForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const title = document.getElementById('book-input-title').value;
+  const author = document.getElementById('book-input-author').value;
+  const category = document.getElementById('book-input-category').value;
+  const bookObj = {
+    title,
+    author,
+    category,
+  };
+
+  document.getElementById('book-input-title').value = '';
+  document.getElementById('book-input-author').value = '';
+  document.getElementById('book-input-category').value = '';
+  createBook(bookObj);
 });

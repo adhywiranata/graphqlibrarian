@@ -4,31 +4,26 @@ var graphqlHTTP = require('express-graphql');
 var { buildSchema } = require('graphql');
 
 var { booksData, membersData } = require('./seedData');
-var { schemaBookType, schemaNewBookInput, bookQueries, bookMutations } = require('./schemas/bookSchema');
+var {
+  schemaBookType,
+  schemaNewBookInput,
+  bookQueries,
+  bookMutations
+} = require('./schemas/bookSchema');
+var {
+  schemaMemberType,
+  schemaBorrowingStatusType,
+  memberQueries,
+} = require('./schemas/memberSchema');
 
-// Construct a schema, using GraphQL schema language
-var schema = buildSchema(`
+var AppSchema = buildSchema(`
   ${schemaBookType}
   ${schemaNewBookInput}
-  type BorrowingStatus {
-    isBorrowing: Boolean,
-    bookId: Int,
-  }
-
-  type Member {
-    id: ID!,
-    firstName: String!,
-    lastName: String,
-    age: Int,
-    borrowingStatus: BorrowingStatus,
-    createdAt: String,
-    updatedAt: String,
-    deletedAt: String,
-  }
-
+  ${schemaMemberType}
+  ${schemaBorrowingStatusType}
   type Query {
     ${bookQueries}
-    members: [Member],
+    ${memberQueries}
   }
 
   type Mutation {
@@ -73,7 +68,7 @@ var root = {
 var app = express();
 app.use(cors());
 app.use('/graphql', graphqlHTTP({
-  schema: schema,
+  schema: AppSchema,
   rootValue: root,
   graphiql: true,
 }));

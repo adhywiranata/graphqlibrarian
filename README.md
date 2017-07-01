@@ -4,6 +4,12 @@
 ## Getting Started
 ``yarn add graphql express graphql-express``
 
+## Start Server and Serve Client
+``yarn start``
+
+## Start Server and Serve Client (Development)
+``yarn dev``
+
 ## Ngopract Iteration
 Ngopract iteration consists of several branches (01-, 02-, etc) to ensure the best "ngopract" experience.
 

@@ -37,15 +37,22 @@ var fakeDatabase = {
 };
 
 // The root provides a resolver function for each API endpoint
+// here, we use setTimeout to show that a resolver handles async in a promise
 var root = {
   books: () => {
-    return booksData;
+    return new Promise((resolve, reject) => {
+      setTimeout(() => resolve(booksData), 1000);
+    });
   },
   getBooksByCategory: ({ category }) => {
-    return booksData.filter(book => book.category === category);
+    return new Promise((resolve, reject) => {
+      setTimeout(() => resolve(booksData.filter(book => book.category === category)), 1000);
+    });
   },
   members: () => {
-    return membersData;
+    return new Promise((resolve, reject) => {
+      setTimeout(() => resolve(membersData), 1000);
+    });
   },
   createBook: ({ input }) => {
     const latestId = fakeDatabase.booksData[fakeDatabase.booksData.length - 1].id;
@@ -60,8 +67,12 @@ var root = {
       updatedAt: null,
       deletedAt: null,
     };
-    fakeDatabase.booksData.push(newBook);
-    return newBook;
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        fakeDatabase.booksData.push(newBook);
+        resolve(newBook);
+      }, 1000);
+    });
   }
 };
 

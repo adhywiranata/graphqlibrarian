@@ -13,10 +13,17 @@ const fetchFromServer = (query, variables) => {
   }).then(res => res.json());
 };
 
+// fragments are basically just a string query for the client
+const booksQueryFragment = `
+  title,
+  author,
+  createdAt,
+`;
+
 const getAllBooks = () => {
   var query = `{
     books {
-      title
+      ${booksQueryFragment}
     }
   }`;
 
@@ -33,7 +40,7 @@ const getAllBooks = () => {
 const getBooksByCategory = (category) => {
   var query = `{
     getBooksByCategory(category: "${category}") {
-      title
+      ${booksQueryFragment}
     }
   }`;
 

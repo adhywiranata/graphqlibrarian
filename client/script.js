@@ -6,7 +6,7 @@ const fetchFromServer = (query, variables) => {
     },
     body: JSON.stringify({
       query: query,
-      variables: { input: variables },
+      variables: variables,
     }),
   }).then(res => res.json());
 };
@@ -36,8 +36,8 @@ const getAllBooks = () => {
 };
 
 const getBooksByCategory = (category) => {
-  var query = `{
-    getBooksByCategory(category: "${category}") {
+  var query = `query GetBookByCategory($category: String!){
+    getBooksByCategory(category: $category) {
       ...bookFields
     }
   }
@@ -48,7 +48,9 @@ const getBooksByCategory = (category) => {
   }
   `;
 
-  fetchFromServer(query).then(res => {
+  var variables = { category: category };
+
+  fetchFromServer(query, variables).then(res => {
     var listWrapper = document.getElementById('categorized-book-list').getElementsByTagName('ul')[0];
     res.data.getBooksByCategory.forEach(book => {
       var listItem = document.createElement('li');
@@ -76,8 +78,7 @@ const getAllMembers = () => {
   });
 };
 
-const createBook = (variables) => {
-  const { title, category, author, pageCount } = variables;
+const createBook = (newBook) => {
   var mutation = `mutation CreateBookMutation($input: NewBookInput) {
     createBook(input: $input) {
     	pageCount,
@@ -86,6 +87,7 @@ const createBook = (variables) => {
     }
   }`;
 
+  var variables = { input: newBook };
   fetchFromServer(mutation, variables).then(res => {
     var listWrapper = document.getElementById('book-list').getElementsByTagName('ul')[0];
     var listItem = document.createElement('li');

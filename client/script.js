@@ -13,19 +13,19 @@ const fetchFromServer = (query, variables) => {
   }).then(res => res.json());
 };
 
-// fragments are basically just a string query for the client
-const booksQueryFragment = `
-  title,
-  author,
-  createdAt,
-`;
-
 const getAllBooks = () => {
-  var query = `{
+  var query = `
+  query {
     books {
-      ${booksQueryFragment}
+      ...bookFields
     }
-  }`;
+  }
+
+  fragment bookFields on Book {
+    title
+    author
+  }
+  `;
 
   fetchFromServer(query).then(res => {
     var listWrapper = document.getElementById('book-list').getElementsByTagName('ul')[0];
@@ -40,9 +40,15 @@ const getAllBooks = () => {
 const getBooksByCategory = (category) => {
   var query = `{
     getBooksByCategory(category: "${category}") {
-      ${booksQueryFragment}
+      ...bookFields
     }
-  }`;
+  }
+
+  fragment bookFields on Book {
+    title
+    author
+  }
+  `;
 
   fetchFromServer(query).then(res => {
     var listWrapper = document.getElementById('categorized-book-list').getElementsByTagName('ul')[0];

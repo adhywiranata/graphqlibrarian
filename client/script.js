@@ -6,9 +6,7 @@ const fetchFromServer = (query, variables) => {
     },
     body: JSON.stringify({
       query: query,
-      variables: {
-        input: variables,
-      },
+      variables: { input: variables },
     }),
   }).then(res => res.json());
 };
@@ -80,13 +78,8 @@ const getAllMembers = () => {
 
 const createBook = (variables) => {
   const { title, category, author, pageCount } = variables;
-  var mutation = `mutation {
-    createBook(input: {
-      title: "${title}",
-      category: "${category}",
-      author: "${author}",
-      pageCount: ${pageCount},
-    }) {
+  var mutation = `mutation CreateBookMutation($input: NewBookInput) {
+    createBook(input: $input) {
     	pageCount,
     	title,
       createdAt,

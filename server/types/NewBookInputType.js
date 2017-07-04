@@ -5,7 +5,7 @@ var {
 } = require('graphql');
 
 let NewBookInputType = new GraphQLInputObjectType({
-  name: 'newBookInput',
+  name: 'NewBookInput',
   description: 'input for creating new book',
   fields: () => ({
     title: {

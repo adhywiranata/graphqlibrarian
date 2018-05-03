@@ -2,7 +2,7 @@
 > Simple NodeJS GraphQL Server using Express
 
 ## Getting Started
-``yarn add graphql express graphql-express``
+``yarn add graphql express express-graphql``
 
 ## Start Server and Serve Client
 ``yarn start``
